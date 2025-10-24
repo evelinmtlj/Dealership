@@ -2,25 +2,24 @@ package com.pluralsight;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.util.AbstractList;
 import java.util.ArrayList;
 
 public class DealShipFileManager {
     //method that reads from file
 
-    public static ArrayList<Vehicle> vehicles() {
+    public static Dealership getDealership() {
 
         ArrayList<Vehicle > vehicles = new ArrayList<>();
-
+        Dealership dealership = new Dealership("Dealership","123 street rd","704-111-2233"); //object
         try {
             FileReader fileReader = new FileReader("inventory.csv");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
             String line;
-
+            //skips the first line
+            bufferedReader.readLine();
             while ((line = bufferedReader.readLine()) != null) {
                 //split the file by parts
                 String[] parts = line.split("\\|");
@@ -34,22 +33,28 @@ public class DealShipFileManager {
                 int odometer = Integer.parseInt(parts[6]);
                 double price = Double.parseDouble(parts[7]);
 
-                // add this
+                // create new vehicle object
                 Vehicle vehicle= new Vehicle(vin,year,make,model,vehicleType,color,odometer,price);
-                vehicles.add(vehicle);
+                //add it to file
+
+                // dealership.addvehicle(vehicle);
+
 
             }
             bufferedReader.close();
             fileReader.close();
 
         } catch (IOException e) {
-            System.out.println("Transaction file not found! ");
+            System.out.println("Inventory file not found! ");
 
         }
 
-        return vehicles;
+        return dealership;
     }
+//populate the inventory with a list of vehicles
+    public static void saveDealership(){
 
+    }
 
 
 }
