@@ -6,7 +6,7 @@ public class Dealership {
     private String name; //instance variables
     private String address;
     private String phone;
-    private ArrayList<Vehicle> inventory;
+    private final ArrayList<Vehicle> inventory;
 
 
 
@@ -54,28 +54,27 @@ public ArrayList<Vehicle> getAllVehicles(){
 return inventory;
 }
 
-public static void getVehiclesByPrice(){
-
-}
-
-public static void getVehiclesByMakeModel(){
-    return null;
-}
-public static void getVehiclesByYear(){
+public   ArrayList<Vehicle> getVehiclesByPrice(Double min,Double max){
     return null;
 }
 
-public static void getVehiclesByColor(){
+public ArrayList<Vehicle> getVehiclesByMakeModel(String make,String model){
     return null;
 }
-public static void getVehiclesByMileage(){
+public  ArrayList<Vehicle> getVehiclesByYear(int min,int max){
     return null;
 }
-public static void getVehiclesByType(){
 
+public  ArrayList<Vehicle> getVehiclesByColor(String color){
+    return null;
+}
+public ArrayList<Vehicle> getVehiclesByMileage(int min, int max){
+    return null;
+}
+public ArrayList<Vehicle> getVehiclesByType(String vehicleType){
 return null;
 }
-public static void removeVehicles(){
+public  void removeVehicle(Vehicle vehicle){
 //empty
 }
 
