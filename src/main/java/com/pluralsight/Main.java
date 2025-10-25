@@ -5,10 +5,12 @@ package com.pluralsight;
 public class Main {
     public static void main(String[] args) {
 
-//created an instance and call its display method
-     UserInterface.displayMainMenu();
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
+
+        Dealership dealership = DealShipFileManager.getDealership();
+        //created an instance and call its display method
+     UserInterface uInterface = new UserInterface(dealership);
+
+     uInterface.display();
 
     }
 }

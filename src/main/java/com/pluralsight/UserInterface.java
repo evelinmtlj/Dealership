@@ -1,6 +1,7 @@
 package com.pluralsight;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Iterator;
 
 public class UserInterface {
@@ -80,62 +81,81 @@ public class UserInterface {
     //methods
     private void getPriceRequest() {
 // step 1 : get price range from user min,max
-        double minPrice = ConsoleHelper.promptForFloat("Enter minimum price you would like to see ");
-        double maxPrice = ConsoleHelper.promptForFloat("Enter maximum price you would like to see");
+        double minPrice = 0;
+        double maxPrice = 0;
         boolean found = false;
-        //step 2: loop thru inventory, for each vehicle get their price
-        for (Vehicle v : dealership.getAllVehicles()) {
-            if (v.getPrice() >= minPrice && v.getPrice() <= maxPrice) {
-                System.out.println(v);
-                found = true;
-            }
-            if (!found) {
-                System.out.println("No vehicles found with price range of: " + minPrice + " or " + maxPrice);
+        while (true) {
+            try {
+                minPrice = ConsoleHelper.promptForFloat("Enter minimum price you would like to see ");
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid please enter a number: ");
+
             }
         }
-
-    }
-
-    private void getByMakeModel() {
-        String make = ConsoleHelper.promptForString("Enter make you would like to see");
-        String model = ConsoleHelper.promptForString("Enter model you would like to see");
-        boolean found = false;
-
-        for (Vehicle v : dealership.getAllVehicles()) {
-            if (v.getMake().equalsIgnoreCase(make) && v.getModel().equalsIgnoreCase(model)) {
-                System.out.println(v);
-                found = true;
+        while (true) {
+            try {
+                maxPrice = ConsoleHelper.promptForFloat("Enter maximum price you would like to see");
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid please enter a number: ");
             }
+            //step 2: loop thru inventory, for each vehicle get their price
+            for (Vehicle v : dealership.getAllVehicles()) {
+                if (v.getPrice() >= minPrice && v.getPrice() <= maxPrice) {
+                    System.out.println(v);
+                    found = true;
+                }
+            }
+
+            if (!found) {
+                System.out.println("No vehicles found with price range of: " + minPrice + " to " + maxPrice);
+            }
+        }
+    }
+        private void getByMakeModel () {
+            String make = ConsoleHelper.promptForString("Enter make you would like to see");
+            String model = ConsoleHelper.promptForString("Enter model you would like to see");
+            boolean found = false;
+
+            for (Vehicle v : dealership.getAllVehicles()) {
+                if (v.getMake().equalsIgnoreCase(make) && v.getModel().equalsIgnoreCase(model)) {
+                    System.out.println(v);
+                    found = true;
+                }
+            }
+
             if (!found) {
                 System.out.println("No vehicle found for " + make + " " + model);
             }
         }
-    }
 
-    private void getByYearRequest() {
-        int minYear = ConsoleHelper.promptForInt("Enter minimum year");
-        int maxYear = ConsoleHelper.promptForInt("Enter max year");
-        boolean found = false;
+        private void getByYearRequest () {
+            int minYear = ConsoleHelper.promptForInt("Enter minimum year");
+            int maxYear = ConsoleHelper.promptForInt("Enter max year");
+            boolean found = false;
 
-        //loop thru vehicles
-        for (Vehicle v : dealership.getAllVehicles()) {
-            if (v.getYear() >= minYear && v.getYear() <= maxYear) {
-                System.out.println(v);
-                found = true;
+            //loop thru vehicles
+            for (Vehicle v : dealership.getAllVehicles()) {
+                if (v.getYear() >= minYear && v.getYear() <= maxYear) {
+                    System.out.println(v);
+                    found = true;
+                }
+
             }
             if (!found) {
                 System.out.println("No vehicle found for year " + minYear + "or " + maxYear);
             }
         }
-    }
 
-    private void getByColorRequest() {
-        String color = ConsoleHelper.promptForString("Enter color you would like to see");
-        boolean found = false;
-        for (Vehicle v : dealership.getAllVehicles()) {
-            if (v.getColor().toLowerCase().contains(color)) {
-                System.out.println(v);
-                found = true;
+        private void getByColorRequest () {
+            String color = ConsoleHelper.promptForString("Enter color you would like to see");
+            boolean found = false;
+            for (Vehicle v : dealership.getAllVehicles()) {
+                if (v.getColor().toLowerCase().contains(color)) {
+                    System.out.println(v);
+                    found = true;
+                }
             }
             if (!found) {
                 System.out.println("No vehicle found with color " + color);
@@ -143,103 +163,107 @@ public class UserInterface {
         }
 
 
-    }
+        private void getByMileageRequest () {
+            int minMileage = ConsoleHelper.promptForInt("Enter minimum mileage");
+            int maxMileage = ConsoleHelper.promptForInt("Enter maximum mileage");
+            boolean found = false;
 
-    private void getByMileageRequest() {
-        int minMileage = ConsoleHelper.promptForInt("Enter minimum year");
-        int maxMileage = ConsoleHelper.promptForInt("Enter maximum year");
-        boolean found = false;
+            //loop thru the vehicles
+            for (Vehicle v : dealership.getAllVehicles()) {
+                if (v.getOdometer() >= minMileage && v.getOdometer() <= maxMileage) {
+                    System.out.println(v);
+                    found = true;
+                }
+                if (!found) {
+                    System.out.println("No vehicles found with mileage of " + minMileage + "or " + maxMileage);
+                }
+            }
 
-        //loop thru the vehicles
-        for (Vehicle v : dealership.getAllVehicles()) {
-            if (v.getOdometer() >= minMileage && v.getOdometer() <= maxMileage) {
-                System.out.println(v);
-                found = true;
-            }
-            if (!found) {
-                System.out.println("No vehicles found with mileage of " + minMileage + "or " + maxMileage);
-            }
         }
 
-    }
-
-    private void getByVehicleTypeRequest() {
-        String type = ConsoleHelper.promptForString("Enter the type of vehicle you would like to see");
-        boolean found = false;
-        //loop
-        for (Vehicle v : dealership.getAllVehicles()) {
-            if (v.getVehicleType().equalsIgnoreCase(type)) {
-                System.out.println(v);
-                found = true;
+        private void getByVehicleTypeRequest () {
+            String type = ConsoleHelper.promptForString("Enter the type of vehicle you would like to see");
+            boolean found = false;
+            //loop
+            for (Vehicle v : dealership.getAllVehicles()) {
+                if (v.getVehicleType().equalsIgnoreCase(type)) {
+                    System.out.println(v);
+                    found = true;
+                }
             }
             if (!found) {
                 System.out.println("No vehicles found for the type of " + type);
+
+
             }
         }
 
-    }
+        private void getAllVehiclesRequest () {
 
-    private void getAllVehiclesRequest() {
-        System.out.println("------- Displaying all vehicles -------- ");
-        boolean found = false;
-        for (Vehicle v : dealership.getAllVehicles()) {
-            System.out.println(v);
-            found = true;
-        }
-        if (!found) {
-            System.out.println("No vehicles currently");
-        }
-
-    }
-
-    private void addVehicleRequest() {
-        try {
-            int vin = ConsoleHelper.promptForInt("Enter vin number ");
-            int year = ConsoleHelper.promptForInt("Enter year of vehicle");
-            String make = ConsoleHelper.promptForString("Enter make of vehicle");
-            String model = ConsoleHelper.promptForString("Enter model of vehicle");
-            String type = ConsoleHelper.promptForString("Enter type of vehicle");
-            String color = ConsoleHelper.promptForString("Enter color of vehicle");
-            int odometer = ConsoleHelper.promptForInt("Enter mileage of vehicle");
-            double price = ConsoleHelper.promptForFloat("Enter vehicle price");
-
-            //create a new vehicle
-            Vehicle newV = new Vehicle(vin, year, make, model, type, color, odometer, price);
-            dealership.addVehicle(newV);
-
-            System.out.println("Vehicle has been added! ");
-            System.out.println(newV);
-        } catch (Exception e) {
-            System.out.println("Vehicle could not be added! please try again");
-            System.out.println("Error:" + e.getMessage());
-        }
-
-    }
-
-    private  void removeVehicleRequest() {
-
-        try {
-            int vin = ConsoleHelper.promptForInt("Enter VIN of vehicle to remove");
-
-            Vehicle removed = null;
-
+            boolean found = false;
             for (Vehicle v : dealership.getAllVehicles()) {
-                if (v.getVin() == vin) {
-                    removed = v;
-                    break;
-                }
-            }
-            if (removed != null) {
-                dealership.removeVehicle(removed);
-                System.out.println("Vehicle has been removed");
-            } else {
-                System.out.println("Vehicle not found");
+                System.out.println(v);
+                found = true;
             }
 
-        } catch (Exception e) {
-            System.out.println("No VIN found please enter a valid VIN number:");
+
+            if (!found) {
+                System.out.println("No vehicles currently");
+
+
+            }
         }
 
+        private void addVehicleRequest () {
+            try {
+                int vin = ConsoleHelper.promptForInt("Enter vin number ");
+                int year = ConsoleHelper.promptForInt("Enter year of vehicle");
+                String make = ConsoleHelper.promptForString("Enter make of vehicle");
+                String model = ConsoleHelper.promptForString("Enter model of vehicle");
+                String type = ConsoleHelper.promptForString("Enter type of vehicle");
+                String color = ConsoleHelper.promptForString("Enter color of vehicle");
+                int odometer = ConsoleHelper.promptForInt("Enter mileage of vehicle");
+                double price = ConsoleHelper.promptForFloat("Enter vehicle price");
+
+                //create a new vehicle
+                Vehicle newV = new Vehicle(vin, year, make, model, type, color, odometer, price);
+                dealership.addVehicle(newV);
+                 System.out.println("Vehicle has been added!");
+
+
+            } catch (Exception e) {
+                System.out.println("Vehicle could not be added! please try again");
+                System.out.println("Error:" + e.getMessage());
+            }
+
+        }
+
+
+        private void removeVehicleRequest () {
+
+            try {
+                int vin = ConsoleHelper.promptForInt("Enter VIN of vehicle to remove");
+
+                Vehicle removed = null;
+
+                for (Vehicle v : dealership.getAllVehicles()) {
+                    if (v.getVin() == vin) {
+                        removed = v;
+                        break;
+                    }
+                }
+                if (removed != null) {
+                    dealership.removeVehicle(removed);
+
+                } else {
+                    System.out.println("Vehicle not found");
+                }
+
+            } catch (Exception e) {
+                System.out.println("No VIN found please enter a valid VIN number:");
+            }
+
+        }
     }
-}
+
 

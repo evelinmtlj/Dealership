@@ -46,7 +46,7 @@ public class Dealership {
 
 public  void addVehicle(Vehicle vehicle){
         inventory.add(vehicle);
-    System.out.println("Vehicle: " + vehicle + "has been added");
+   // System.out.println("Vehicle: " + vehicle + "has been added");
 }
 
 public ArrayList<Vehicle> getAllVehicles(){
