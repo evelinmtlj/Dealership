@@ -1,10 +1,26 @@
 package com.pluralsight;
 
+import java.util.ArrayList;
+
 public class UserInterface {
-    //call the methods
 
-    public static void displayMainMenu(){
+    private Dealership dealership;
 
+    public UserInterface(Dealership dealership) {
+        this.dealership = dealership;
+
+    }
+
+
+
+
+
+
+    public  void display(){
+
+    //init();
+       Dealership dl =  DealShipFileManager.getDealership();
+      // System.out.println(dl.getAddress());
         String mainMenu = """
                                  *************************************
                                 *     Welcome to the Main Screen   *
@@ -27,16 +43,16 @@ public class UserInterface {
 
             switch (choice) {
                 case 1:
-                    //method
+                    getPriceRequest();
                     break;
                 case 2:
-                    //method
+                  getByMakeModel();
                     break;
                 case 3:
-                    //method
+                  getByYearRequest();
                     break;
                 case 4:
-                    //method
+                    getByColorRequest();
                     break;
                 case 5:
                     //method
@@ -45,7 +61,7 @@ public class UserInterface {
                     //method
                     break;
                 case 7:
-                    //method
+                    getAllVehiclesRequest();
                     break;
                 case 8:
                     //method
@@ -54,7 +70,7 @@ public class UserInterface {
                     //method
                     break;
                 case 99:
-                    System.out.println("GOODBYE PLEASE VISIT US AGAIN ");
+                    System.out.println("GOODBYE PLEASE VISIT US AGAIN! ");
                    return;
 
                 default:
@@ -64,42 +80,77 @@ public class UserInterface {
         }
     }
 
-
     //methods
-    private static void getPriceRequest(){
+    private  void getPriceRequest(){
+// step 1 : get price range from user min,max
+        double minPrice = ConsoleHelper.promptForFloat("Enter minimum price you would like to see ");
+        double maxPrice= ConsoleHelper.promptForFloat("Enter maximum price you would like to see");
+        //step 2: loop thru inventory, for each vehicle get their price
+        for(Vehicle v: dealership.getAllVehicles()) {
+            if(v.getPrice() >= minPrice && v.getPrice() <= maxPrice) {
+                System.out.println(v);
+            }
+        }
 
     }
 
-    private static void getByMakeModel(){
+    private  void getByMakeModel(){
+String make = ConsoleHelper.promptForString("Enter make you would like to see");
+String model = ConsoleHelper.promptForString("Enter model you would like to see");
 
+for(Vehicle v: dealership.getAllVehicles()) {
+    if(v.getMake().equalsIgnoreCase(make) && v.getModel().equalsIgnoreCase(model)) {
+        System.out.println(v);
     }
-
-    private static void getByYearRequest(){
-
-    }
-    private static void getByColorRequest(){
-
-    }
-
-   private static void getByMileageRequest(){
-
-    }
-
-    private static void getByVehicleTypeRequest(){
-
-    }
-
-    private static void getAllVehiclesRequest(){
-        // we list
-    }
-
-    private static void addVehicleRequest(){
-
-    }
-
-    private static void removeVehicleRequest(){
-
-    }
-
-
 }
+    }
+
+    private  void getByYearRequest() {
+        int minYear = ConsoleHelper.promptForInt("Enter minimum year");
+        int maxYear = ConsoleHelper.promptForInt("Enter max year");
+
+        //loop thru vehicles
+        for (Vehicle v : dealership.getAllVehicles()) {
+            if (v.getYear() >= minYear && v.getYear() <= maxYear) {
+                System.out.println(v);
+            }
+
+        }
+    }
+        private void getByColorRequest () {
+            String color = ConsoleHelper.promptForString("Enter color you would like to see");
+            for (Vehicle v : dealership.getAllVehicles()) {
+                if (v.getColor().toLowerCase().contains(color)) {
+                    System.out.println(v);
+                }
+            }
+
+        }
+
+        private static void getByMileageRequest () {
+
+        }
+
+        private static void getByVehicleTypeRequest () {
+
+        }
+
+        private void getAllVehiclesRequest () {
+            System.out.println("------- Displaying all vehicles -------- ");
+            for (Vehicle v : dealership.getAllVehicles()) {
+                System.out.println(v);
+            }
+
+        }
+
+        private static void addVehicleRequest () {
+
+
+        }
+
+        private static void removeVehicleRequest () {
+
+        }
+
+    }
+
