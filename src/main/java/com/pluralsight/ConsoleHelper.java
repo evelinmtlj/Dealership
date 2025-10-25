@@ -4,6 +4,7 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ConsoleHelper {
@@ -97,6 +98,19 @@ public class ConsoleHelper {
                     System.out.println("Invalid time please enter using format HH:mm:ss");
                 }
             }
+        }
+        public static double promptForDouble(String prompt) {
+while(true) {
+    try {
+        System.out.println(prompt + ": ");
+        double result = scanner.nextDouble();
+        scanner.nextLine();
+        return result;
+    } catch (InputMismatchException e) {
+        System.out.println("Invalid input. Please try again:");
+        scanner.nextLine();
+    }
+}
         }
     }
 
