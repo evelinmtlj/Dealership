@@ -3,6 +3,7 @@ package com.pluralsight;
 import com.sun.security.jgss.GSSUtil;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Iterator;
@@ -211,6 +212,11 @@ public class UserInterface {
                 Vehicle newV = new Vehicle(vin, year, make, model, type, color, odometer, price);
                 dealership.addVehicle(newV);
                  System.out.println("Vehicle has been added!");
+                 try{
+                     DealShipFileManager.saveDealership(dealership);
+                 } catch (IOException e){
+                     System.out.println("Error saving dealership");
+                 }
         }
 
 
@@ -220,10 +226,15 @@ public class UserInterface {
         boolean removed = dealership.removeVehicle(vin);
         if (removed) {
             System.out.println("Vehicle removed!");
+            //save dealership to file
+            try {
+                DealShipFileManager.saveDealership(dealership);
+            } catch (IOException e) {
+                System.out.println("Error saving dealership");
+            }
         } else {
-            System.out.println("Vehicle not found!");
+            System.out.println("No vehicle found for vin number "+ vin);
         }
-
     }
 }
 
