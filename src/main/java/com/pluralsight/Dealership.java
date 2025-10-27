@@ -6,8 +6,7 @@ public class Dealership {
     private String name; //instance variables
     private String address;
     private String phone;
-    private  ArrayList<Vehicle> inventory;
-
+    private ArrayList<Vehicle> inventory;
 
 
     //constructor
@@ -44,98 +43,104 @@ public class Dealership {
     }
 
 
-public  void addVehicle(Vehicle vehicle){
+    public void addVehicle(Vehicle vehicle) {
         inventory.add(vehicle);
-   // System.out.println("Vehicle: " + vehicle + "has been added");
-}
+        // System.out.println("Vehicle: " + vehicle + "has been added");
+    }
 
-public ArrayList<Vehicle> getAllVehicles(){
-    System.out.println("------ Displaying all vehicles -------");
-return inventory;
-}
+    public ArrayList<Vehicle> getAllVehicles() {
+        System.out.println("------ Displaying all vehicles -------");
+        return inventory;
+    }
 
-public  void  getVehiclesByPrice(Double min,Double max){ //<- parameters inside
+
+    public ArrayList<Vehicle> getVehiclesByPrice2(Double min, Double max) { //<- parameters inside
+        ArrayList<Vehicle> foundVehicles = new ArrayList<>();
+
+        for (Vehicle v : inventory) {
+            if (v.getPrice() >= min && v.getPrice() <= max) {
+                foundVehicles.add(v);
+            }
+        }
+        return foundVehicles;
+    }
+
+    public ArrayList<Vehicle> getVehiclesByMakeModel(String make, String model) {
+
+        ArrayList<Vehicle> mmV = new ArrayList<>();
+
+
+        for (Vehicle v : inventory) {
+            if (v.getMake().equalsIgnoreCase(make) && v.getModel().equalsIgnoreCase(model)) {
+               mmV.add(v);
+
+            }
+        }
+        return mmV;
+
+    }
+
+    public boolean getVehiclesByYear(int min, int max) {
         boolean found = false;
-        for (Vehicle v: inventory){
-            if(v.getPrice() >= min && v.getPrice() <= max) {
+        for (Vehicle v : inventory) {
+            if (v.getYear() >= min && v.getYear() <= max) {
                 System.out.println(v);
                 found = true;
             }
         }
-        if(!found) {
-            System.out.println("No vehicles within price range found");
-        }
-}
+        return found;
+    }
 
-public void  getVehiclesByMakeModel(String make,String model) {
+    public boolean getVehiclesByColor(String color) {
         boolean found = false;
-    for (Vehicle v : inventory) {
-        if (v.getMake().equalsIgnoreCase(make) && v.getModel().equalsIgnoreCase(model)) {
-            System.out.println(v);
-            found = true;
+        for (Vehicle v : inventory) {
+            if (v.getColor().equalsIgnoreCase(color)) {
+                System.out.println(v);
+                found = true;
+            }
         }
-    }
-    if(!found) {
-        System.out.println("No vehicles found with this make or model!");
+        return found;
     }
 
-}
-public  void  getVehiclesByYear(int min,int max){
-    boolean found = false;
-    for(Vehicle v: inventory) {
-        if (v.getYear() >= min && v.getYear() <= max) {
-            System.out.println(v);
-            found = true;
+    public ArrayList<Vehicle> getVehiclesByMileage(int min, int max) {
+        ArrayList<Vehicle> vehicleMileage = new ArrayList<>();
+        for (Vehicle v : inventory) {
+            if (v.getOdometer() >= min && v.getOdometer() <= max) {
+                vehicleMileage.add(v);
+            }
         }
+       return vehicleMileage;
     }
-    if(!found) {
-        System.out.println("No vehicles found within the year range");
+
+    public boolean getVehiclesByType(String vehicleType) {
+        boolean found = false;
+
+        for (Vehicle v : inventory) {
+            if (v.getVehicleType().equalsIgnoreCase(vehicleType)) {
+                System.out.println(v);
+                found = true;
+            }
+        }
+        return found;
     }
+
+
+public Vehicle getVehicleByVIN(int vin){
+        for ( Vehicle v : this.getAllVehicles()){
+            if (v.getVin() == vin){
+                return v;
+            }
+        }
+        return null;
 }
 
-public void getVehiclesByColor(String color){
-   boolean found = false;
-   for(Vehicle v: inventory) {
-       if(v.getColor().equalsIgnoreCase(color)) {
-           System.out.println(v);
-           found = true;
-       }
-   }
-   if(!found){
-       System.out.println("No cars found with that color!");
-   }
-}
-public void getVehiclesByMileage(int min, int max){
-    boolean found = false;
-            for(Vehicle v: inventory) {
-                if(v.getOdometer() >= min && v.getOdometer() <= max) {
-                    System.out.println(v);
-                    found = true;
-                }
-            }
-            if(!found) {
-                System.out.println("No cars found within mileage range");
-            }
-}
-public void getVehiclesByType(String vehicleType) {
-    boolean found = false;
-    for (Vehicle v : inventory) {
-        if (v.getVehicleType().equalsIgnoreCase(vehicleType)) {
-            System.out.println(v);
-            found = true;
-        }
+public boolean removeVehicle(int vin){
+    Vehicle v = getVehicleByVIN(vin);
+    if(v == null){
+        return false;
     }
-    if (!found) {
-        System.out.println("No vehicles found of type:" + vehicleType);
-    }
+    return inventory.remove(v);
 }
-    public void removeVehicle(Vehicle vehicle) {
-        if(inventory.remove(vehicle)) {
-            System.out.println("Vehicle: " + vehicle + " has been removed");
-        } else {
-            System.out.println("Vehicle not found");
-        }
-    }
 
 
 
