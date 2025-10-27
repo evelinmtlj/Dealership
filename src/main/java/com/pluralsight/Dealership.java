@@ -49,7 +49,7 @@ public class Dealership {
     }
 
     public ArrayList<Vehicle> getAllVehicles() {
-        System.out.println("------ Displaying all vehicles -------");
+
         return inventory;
     }
 
@@ -80,26 +80,26 @@ public class Dealership {
 
     }
 
-    public boolean getVehiclesByYear(int min, int max) {
-        boolean found = false;
+    public ArrayList<Vehicle> getVehiclesByYear(int min, int max) {
+
+        ArrayList<Vehicle> vehicleYear = new ArrayList<>();
         for (Vehicle v : inventory) {
             if (v.getYear() >= min && v.getYear() <= max) {
-                System.out.println(v);
-                found = true;
+                vehicleYear.add(v);
             }
         }
-        return found;
+        return vehicleYear;
     }
 
-    public boolean getVehiclesByColor(String color) {
-        boolean found = false;
+    public ArrayList<Vehicle> getVehiclesByColor(String color) {
+        ArrayList<Vehicle> vehicleColor = new ArrayList<>();
         for (Vehicle v : inventory) {
             if (v.getColor().equalsIgnoreCase(color)) {
-                System.out.println(v);
-                found = true;
+                vehicleColor.add(v);
+
             }
         }
-        return found;
+        return vehicleColor;
     }
 
     public ArrayList<Vehicle> getVehiclesByMileage(int min, int max) {
@@ -112,16 +112,17 @@ public class Dealership {
        return vehicleMileage;
     }
 
-    public boolean getVehiclesByType(String vehicleType) {
-        boolean found = false;
+    public ArrayList<Vehicle> getVehiclesByType(String vehicleType) {
+        ArrayList<Vehicle> vehiclesType = new ArrayList<>();
 
         for (Vehicle v : inventory) {
             if (v.getVehicleType().equalsIgnoreCase(vehicleType)) {
-                System.out.println(v);
-                found = true;
+                vehiclesType.add(v);
+
             }
         }
-        return found;
+        return vehiclesType;
+
     }
 
 

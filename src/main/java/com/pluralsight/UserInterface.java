@@ -115,7 +115,7 @@ public class UserInterface {
                 }
             }
             else {
-                System.out.println("No vehicles found for " + make + " " + model+ " found");
+                System.out.println("No vehicles found for " + make + " " + model);
             }
         }
 
@@ -123,22 +123,31 @@ public class UserInterface {
             int minYear = ConsoleHelper.promptForInt("Enter minimum year");
             int maxYear = ConsoleHelper.promptForInt("Enter max year");
 
-            boolean found = dealership.getVehiclesByYear(minYear,maxYear);
+            ArrayList<Vehicle> vehicleYear = dealership.getVehiclesByYear(minYear,maxYear);
 
-            if(!found){
-                System.out.println("No vehicles found within " + minYear + " "+ maxYear);
+            if(!vehicleYear.isEmpty()) {
+                for(Vehicle v: vehicleYear) {
+                    System.out.println(v);
+                }
+            }
+              else {
+                System.out.println("No vehicles found within " + minYear + " " + maxYear);
             }
         }
 
-        private void getByColorRequest () {
-            String color = ConsoleHelper.promptForString("Enter color you would like to see");
+    private void getByColorRequest() {
+        String color = ConsoleHelper.promptForString("Enter color you would like to see");
 
-           boolean found =  dealership.getVehiclesByColor(color);
+        ArrayList<Vehicle> vehicleColor = dealership.getVehiclesByColor(color);
 
-            if(!found){
-                System.out.println("No vehicles found for "+ color + " vehicle");
+        if (!vehicleColor.isEmpty()) {
+            for (Vehicle v : vehicleColor) {
+                System.out.println(v);
             }
+        } else {
+            System.out.println("No vehicles found for " + color + " vehicle");
         }
+    }
 
 
     private void getByMileageRequest() {
@@ -158,11 +167,15 @@ public class UserInterface {
 
 
         private void getByVehicleTypeRequest () {
+            String type = ConsoleHelper.promptForString("Enter the type of vehicle you would like to see");
+        ArrayList<Vehicle> vehiclesType = dealership.getVehiclesByType(type);
 
-               String type = ConsoleHelper.promptForString("Enter the type of vehicle you would like to see");
-              boolean found =  dealership.getVehiclesByType(type);
-
-              if(!found){
+            if(!vehiclesType.isEmpty()) {
+                for(Vehicle v: vehiclesType) {
+                    System.out.println(v);
+                }
+            }
+            else {
                   System.out.println("No vehicles found");
               }
 
@@ -177,10 +190,8 @@ public class UserInterface {
                 found = true;
             }
 
-
             if (!found) {
                 System.out.println("No vehicles currently");
-
 
             }
         }
@@ -200,10 +211,6 @@ public class UserInterface {
                 Vehicle newV = new Vehicle(vin, year, make, model, type, color, odometer, price);
                 dealership.addVehicle(newV);
                  System.out.println("Vehicle has been added!");
-
-
-
-
         }
 
 
