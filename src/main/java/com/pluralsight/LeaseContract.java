@@ -3,29 +3,19 @@ package com.pluralsight;
 public class LeaseContract extends Contract {
     private double expectedEndingValue;
     private double leaseFee;
-    private double vehiclePrice;
 
 
-    public LeaseContract(String dateOfContract, String customerName, String customerEmail, String vehicleSold, double vehiclePrice) {
+    public LeaseContract(String dateOfContract, String customerName, String customerEmail, Vehicle vehicleSold) {
         super(dateOfContract, customerName, customerEmail, vehicleSold);
-        this.vehiclePrice = vehiclePrice;
     }
  //getters and setters for vehicle price
-    public double getVehiclePrice() {
-        return vehiclePrice;
-    }
-
-    public void setVehiclePrice(double vehiclePrice) {
-        this.vehiclePrice = vehiclePrice;
-    }
-    //getters
 
     public double getExpectedEndingValue() {
-        return vehiclePrice * 0.5;
+        return getVehicleSold().getPrice() * 0.5;
     }
 
     public double getLeaseFee() {
-        return vehiclePrice * .07;
+        return getVehicleSold().getPrice() * .07;
     }
 
     //formula
@@ -46,7 +36,7 @@ public class LeaseContract extends Contract {
 
     @Override
     public double getTotalPrice(){
-return vehiclePrice + getLeaseFee()  - getExpectedEndingValue();
+return getVehicleSold().getPrice() + getLeaseFee()  - getExpectedEndingValue();
     }
 
     @Override
@@ -58,4 +48,34 @@ int months = 36;
 return formulaMonthlyPayment(principal,annualRate,months);
 
     }
+
+    @Override
+    public String toString() {
+        return "Lease Contract:\n" +
+                "Customer Name: " + getCustomerName() + "\n" +
+                "Customer Email: " + getCustomerEmail() + "\n" +
+                "Vehicle Sold: " + getVehicleSold() + "\n" +
+                "Lease Fee: $" + String.format("%.2f", getLeaseFee()) + "\n" +
+                "Expected Ending Value: $" + String.format("%.2f", getExpectedEndingValue()) + "\n" +
+                "Total Price: $" + String.format("%.2f", getTotalPrice()) + "\n" +
+                "Monthly Payment: $" + String.format("%.2f", getMonthlyPayment());
+    }
+
+    public String getContractLease(){
+        return "LEASE" + getDateOfContract() + "|" + getCustomerName()
+                + "|" + getCustomerEmail() + "|" + getVehicleSold().getVin() + "|"
+                + getVehicleSold().getYear() + "|" + getVehicleSold().getMake() + "|"
+                + getVehicleSold().getModel() + "|" + getVehicleSold().getVehicleType()
+                + "|" + getVehicleSold().getColor() + "|" + getVehicleSold().getOdometer() +
+                "|" + getVehicleSold().getPrice() + "|" + expectedEndingValue + "|" + leaseFee
+                + "|" + getTotalPrice() + "|" + getMonthlyPayment();
+
+    }
+    //save contract to file
+
+    public void saveToFile(String fileName) {
+        ContractFileManager cm = new ContractFileManager("contracts.csv");
+        cm.appendContract(getContractLease());
+    }
+
 }
