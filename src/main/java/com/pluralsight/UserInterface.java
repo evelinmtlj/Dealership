@@ -36,6 +36,7 @@ public class UserInterface {
                               7 - List ALL vehicles
                               8 - Add a vehicle
                               9 - Remove a vehicle
+                              10 - Create sale/lease contract
                               99 - Quit
                 
                 """;
@@ -70,6 +71,9 @@ public class UserInterface {
                     break;
                 case 9:
                     removeVehicleRequest();
+                    break;
+                case 10:
+                    contractRequest();
                     break;
                 case 99:
                     System.out.println("GOODBYE PLEASE VISIT US AGAIN! ");
@@ -236,6 +240,45 @@ public class UserInterface {
             System.out.println("No vehicle found for vin number "+ vin);
         }
     }
+    private void contractRequest() {
+        int vin = ConsoleHelper.promptForInt("Enter VIN of the vehicle to sell/lease");
+
+        //find vehicle in inventory
+        Vehicle vehicleSold = dealership.getVehicleByVIN(vin);
+        if (vehicleSold == null) {
+            System.out.println("vehicle not found");
+            return;
+        }
+
+
+        String customerName = ConsoleHelper.promptForString("Enter customer name");
+        String customerEmail = ConsoleHelper.promptForString("Enter customer email");
+
+        String type = ConsoleHelper.promptForString("Sale of Lease? ").toUpperCase();
+
+        Contract contract = null;
+
+        if(type.equalsIgnoreCase("Sale")) {
+            boolean finance = ConsoleHelper.promptForString("Finance? y/n").equalsIgnoreCase("y");
+            contract = new SalesContract(customerName,customerEmail,vehicleSold,finance);
+        } else if (type.equalsIgnoreCase("Lease")) {
+            contract = new LeaseContract(customerName,customerEmail,vehicleSold);
+        } else {
+            System.out.println("Invalid contract");
+            return;
+        }
+        ContractFileManager fileManager = new ContractFileManager("contracts.csv");
+        fileManager.saveContract(contract);
+
+        //remove from inventory
+        dealership.removeVehicle(vin);
+       //confirm to user
+        System.out.println("Contract saved succesfully");
+        System.out.println("Vehicle removed from inventory");
+        System.out.println("Total price: " + contract.getTotalPrice());
+        System.out.println("Monthly payment: $" + contract.getMonthlyPayment());
+    }
+
 }
 
 
