@@ -5,16 +5,15 @@ public class SalesContract extends Contract {
     private double recordingFee;
     private double processingFee;
     private boolean finance;
-    private double vehiclePrice;
 
-    public SalesContract(String dateOfContract, String customerName, String customerEmail, String vehicleSold,   boolean finance, double vehiclePrice) {
+
+    public SalesContract(String dateOfContract, String customerName, String customerEmail, Vehicle vehicleSold, boolean finance) {
         super(dateOfContract, customerName, customerEmail, vehicleSold);
         this.finance = false;
-        this.vehiclePrice = vehiclePrice;
     }
 
     public double getSalesTaxAmount() {
-        return vehiclePrice * .05;
+        return getVehicleSold().getPrice() * .05;
     }
 
     public double getRecordingFee() {
@@ -22,7 +21,7 @@ public class SalesContract extends Contract {
     }
 
     public double getProcessingFee() {
-        if(vehiclePrice < 10000) {
+        if(getVehicleSold().getPrice() < 10000) {
            return 295;
         } else {
            return 495;
@@ -39,17 +38,9 @@ public class SalesContract extends Contract {
         this.finance = finance;
     }
 
-    public double getVehiclePrice() {
-        return vehiclePrice;
-    }
-
-    public void setVehiclePrice(double vehiclePrice) {
-        this.vehiclePrice = vehiclePrice;
-    }
-
     @Override
     public double getTotalPrice(){
-return vehiclePrice + getSalesTaxAmount() + getRecordingFee() + getProcessingFee();
+return getVehicleSold().getPrice() + getSalesTaxAmount() + getRecordingFee() + getProcessingFee();
     }
 
     public double formulaMonthlyPayment(double principal,double annualRate,int months){
@@ -71,7 +62,7 @@ double monthlyInterestRate = (annualRate /12) ;
     public double getMonthlyPayment(){
         //check if customer did not finance
 
-        if(finance == false){
+        if(!finance){
             return 0;
         }
 
@@ -79,7 +70,7 @@ double monthlyInterestRate = (annualRate /12) ;
         double annualRate;
         int months;
 
-        if(vehiclePrice >= 10000){
+        if(getVehicleSold().getPrice() >= 10000){
             annualRate = .0425;
             months = 48;
         } else {
@@ -92,4 +83,33 @@ double monthlyInterestRate = (annualRate /12) ;
         return formulaMonthlyPayment(principal,annualRate,months);
     }
 
+    @Override
+    public String toString() {
+        return "Sales Contract:\n" +
+                "Customer Name: " + getCustomerName() + "\n" +
+                "Customer Email: " + getCustomerEmail() + "\n" +
+                "Vehicle Sold: " + getVehicleSold() + "\n" +
+                "Total Price: $" + getTotalPrice() + "\n" +
+                "Monthly Payment: $" + String.format("%.2f", getMonthlyPayment()) + "\n" +
+                "Financed: " + (finance ? "Yes" : "No");
+    }
+
+    public String getContractFormat(){
+        return "Sale|" + getDateOfContract() + "|" +
+                getCustomerName() + "|" + getCustomerEmail() +
+                "|" + getVehicleSold().getVin() +
+                "|" +  getVehicleSold().getYear() +
+                "|" + getVehicleSold().getMake() + "|"+ getVehicleSold().getModel() +"|" +
+                getVehicleSold().getVehicleType() + "|" + getVehicleSold().getColor() + "|" + getVehicleSold().getOdometer() + "|"
+        + getVehicleSold().getPrice() + "|" + salesTaxAmount + "|" + recordingFee +
+                "|" + processingFee + getTotalPrice() + "|" + (finance ? "Yes" : "NO") + getMonthlyPayment();
+
+
+    }
+
+    //save to file
+    public void saveToFile(String fileName){
+        ContractFileManager manager = new ContractFileManager("contracts.csv");
+        manager.appendContract(getContractFormat());
+    }
 }
